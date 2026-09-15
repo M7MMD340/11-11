@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { View, FlatList, KeyboardAvoidingView, Platform } from 'react-native';
+import { useNavigation } from 'expo-router';
 import { useCameraPermissions } from 'expo-camera';
 import { collection, doc, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
@@ -20,6 +21,7 @@ import { spacing, TAB_BAR_CLEARANCE } from '../../constants/theme';
 
 export default function ChatScreen() {
   const { user, couple, partnerId, partnerProfile } = useAuth();
+  const navigation = useNavigation();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [meta, setMeta] = useState<ChatMeta>({ streak: 0, lastActiveDate: null });
   const [showCamera, setShowCamera] = useState(false);
@@ -27,6 +29,16 @@ export default function ChatScreen() {
   const [captured, setCaptured] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
   const [viewing, setViewing] = useState<ChatMessage | null>(null);
+
+  const fullScreenTakeover = showCamera || !!captured;
+
+  // Hide the floating tab bar while the camera/caption screens cover the
+  // whole viewport — otherwise it floats over the live camera preview.
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      tabBarStyle: fullScreenTakeover ? { display: 'none' } : undefined,
+    });
+  }, [fullScreenTakeover, navigation]);
 
   useEffect(() => {
     if (!couple) return;
