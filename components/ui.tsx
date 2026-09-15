@@ -303,7 +303,7 @@ const styles = StyleSheet.create({
     paddingVertical: spacing(2.5),
     borderRadius: radius.lg,
     marginBottom: spacing(2.5),
-    ...shadow.lift,
+    ...shadow.soft,
   },
   gradientHeaderTitle: {
     fontSize: 24,

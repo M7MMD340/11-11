@@ -49,19 +49,21 @@ export default function Signup() {
           <Subtitle>أنشئوا حسابكم للبدء</Subtitle>
 
           <ErrorText>{error}</ErrorText>
-          <Field placeholder="الاسم" value={name} onChangeText={setName} />
+          <Field placeholder="الاسم" value={name} onChangeText={setName} accessibilityLabel="الاسم" />
           <Field
             placeholder="البريد الإلكتروني"
             autoCapitalize="none"
             keyboardType="email-address"
             value={email}
             onChangeText={setEmail}
+            accessibilityLabel="البريد الإلكتروني"
           />
           <Field
             placeholder="كلمة المرور"
             secureTextEntry
             value={password}
             onChangeText={setPassword}
+            accessibilityLabel="كلمة المرور"
           />
           <Button title="إنشاء حساب" onPress={onSubmit} loading={loading} />
           <Link href="/(auth)/login" asChild>

@@ -19,7 +19,7 @@ export const colors = {
 };
 
 export const gradients = {
-  hero: ['#A6334E', '#D94F6B', '#E8875F'] as const,
+  hero: ['#A6334E', '#D94F6B'] as const,
   gold: ['#E8B84B', '#D94F6B'] as const,
   night: ['#2B1F2D', '#5B4B8A'] as const,
 };

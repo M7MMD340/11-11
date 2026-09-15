@@ -60,11 +60,20 @@ export default function IdeasBoard() {
             layout={LinearTransition.springify().damping(18)}
             style={[styles.row, item.done && { opacity: 0.5 }]}
           >
-            <Pressable onPress={() => removeIdea(couple!.id, item.id)}>
+            <Pressable
+              onPress={() => removeIdea(couple!.id, item.id)}
+              accessibilityRole="button"
+              accessibilityLabel={`حذف فكرة: ${item.text}`}
+            >
               <Ionicons name="trash-outline" size={20} color={colors.muted} />
             </Pressable>
             <Text style={[styles.rowText, item.done && styles.rowTextDone]}>{item.text}</Text>
-            <Pressable onPress={() => toggleIdea(couple!.id, item.id, !item.done)}>
+            <Pressable
+              onPress={() => toggleIdea(couple!.id, item.id, !item.done)}
+              accessibilityRole="checkbox"
+              accessibilityState={{ checked: item.done }}
+              accessibilityLabel={item.done ? `إلغاء إنجاز: ${item.text}` : `وضع علامة أنجزناها: ${item.text}`}
+            >
               <Ionicons
                 name={item.done ? 'checkmark-circle' : 'ellipse-outline'}
                 size={24}

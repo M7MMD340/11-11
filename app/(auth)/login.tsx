@@ -44,12 +44,14 @@ export default function Login() {
             keyboardType="email-address"
             value={email}
             onChangeText={setEmail}
+            accessibilityLabel="البريد الإلكتروني"
           />
           <Field
             placeholder="كلمة المرور"
             secureTextEntry
             value={password}
             onChangeText={setPassword}
+            accessibilityLabel="كلمة المرور"
           />
           <Button title="دخول" onPress={onSubmit} loading={loading} />
           <Link href="/(auth)/signup" asChild>
