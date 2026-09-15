@@ -79,6 +79,7 @@ export function AvatarEditor({
             accessibilityRole="button"
             accessibilityLabel={`لون ${c}`}
             accessibilityState={{ selected: mine.color === c }}
+            hitSlop={6}
           />
         ))}
       </View>

@@ -14,7 +14,7 @@ export function MomentViewer({ moment, onClose }: { moment: Moment | null; onClo
               <Text style={{ color: '#fff', fontSize: 16 }}>{moment.caption}</Text>
             </View>
           )}
-          <Pressable style={s.viewerClose} onPress={onClose} accessibilityRole="button" accessibilityLabel="إغلاق">
+          <Pressable style={s.viewerClose} onPress={onClose} accessibilityRole="button" accessibilityLabel="إغلاق" hitSlop={12}>
             <Ionicons name="close" size={30} color="#fff" />
           </Pressable>
         </View>

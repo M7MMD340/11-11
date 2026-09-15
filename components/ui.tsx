@@ -9,6 +9,8 @@ import {
   View,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { StatusBar } from 'expo-status-bar';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring, FadeInDown } from 'react-native-reanimated';
 import { colors, spacing, shadow, radius, gradients, APP_SHORT_NAME, APP_DATE } from '../constants/theme';
 
@@ -157,13 +159,18 @@ export function GradientHeader({
   subtitle?: string;
   right?: React.ReactNode;
 }) {
+  const insets = useSafeAreaInsets();
+  // Screen already contributes spacing(3) of top padding; only top up the rest
+  // so the title clears the status bar / notch on devices with a tall inset.
+  const extraTop = Math.max(0, insets.top - spacing(3));
   return (
     <LinearGradient
       colors={gradients.hero}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
-      style={styles.gradientHeader}
+      style={[styles.gradientHeader, { paddingTop: spacing(2.5) + extraTop }]}
     >
+      <StatusBar style="light" />
       <View style={{ flex: 1 }}>
         <Text style={styles.gradientHeaderTitle}>{title}</Text>
         {!!subtitle && <Text style={styles.gradientHeaderSubtitle}>{subtitle}</Text>}

@@ -40,3 +40,8 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# local Claude Code tooling (installed skills, local settings)
+.claude/settings.local.json
+.claude/skills/
+.claude/agents/impeccable-*.md
