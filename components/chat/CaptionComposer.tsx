@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { View, Image, Pressable, TextInput } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../../constants/theme';
-import { momentsStyles as s } from './styles';
+import { chatStyles as s } from './styles';
 
 export function CaptionComposer({
   uri,

@@ -14,14 +14,20 @@ export type Couple = {
   createdAt: number;
 };
 
-export type Moment = {
+export type ChatMessage = {
   id: string;
   senderId: string;
-  imageData: string;
-  caption: string;
+  type: 'text' | 'photo';
+  text?: string;
+  imageData?: string;
   createdAt: number;
-  expiresAt: number;
+  expiresAt?: number;
   viewedBy: string[];
+};
+
+export type ChatMeta = {
+  streak: number;
+  lastActiveDate: string | null;
 };
 
 export type Idea = {

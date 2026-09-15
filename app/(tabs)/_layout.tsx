@@ -52,8 +52,8 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'لحظاتنا',
-          tabBarIcon: (p) => <AnimatedTabIcon name="camera" {...p} />,
+          title: 'دردشتنا',
+          tabBarIcon: (p) => <AnimatedTabIcon name="chatbubble-ellipses" {...p} />,
         }}
       />
       <Tabs.Screen

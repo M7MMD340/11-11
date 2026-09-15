@@ -9,6 +9,7 @@ type AuthContextValue = {
   profile: UserProfile | null;
   couple: Couple | null;
   partnerId: string | null;
+  partnerProfile: UserProfile | null;
   initializing: boolean;
 };
 
@@ -17,6 +18,7 @@ const AuthContext = createContext<AuthContextValue>({
   profile: null,
   couple: null,
   partnerId: null,
+  partnerProfile: null,
   initializing: true,
 });
 
@@ -24,6 +26,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [couple, setCouple] = useState<Couple | null>(null);
+  const [partnerProfile, setPartnerProfile] = useState<UserProfile | null>(null);
   const [initializing, setInitializing] = useState(true);
 
   useEffect(() => {
@@ -71,8 +74,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return couple.members.find((m) => m !== user.uid) ?? null;
   }, [couple, user]);
 
+  useEffect(() => {
+    if (!partnerId) {
+      setPartnerProfile(null);
+      return;
+    }
+    const unsub = onSnapshot(doc(db, 'users', partnerId), (snap) => {
+      setPartnerProfile(snap.exists() ? ({ uid: snap.id, ...(snap.data() as any) }) : null);
+    });
+    return unsub;
+  }, [partnerId]);
+
   return (
-    <AuthContext.Provider value={{ user, profile, couple, partnerId, initializing }}>
+    <AuthContext.Provider value={{ user, profile, couple, partnerId, partnerProfile, initializing }}>
       {children}
     </AuthContext.Provider>
   );

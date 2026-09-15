@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { View, Pressable } from 'react-native';
 import { CameraView } from 'expo-camera';
 import { Ionicons } from '@expo/vector-icons';
-import { momentsStyles as s } from './styles';
+import { chatStyles as s } from './styles';
 
 export function CameraCapture({
   onCapture,
