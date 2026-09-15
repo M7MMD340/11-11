@@ -23,8 +23,9 @@
 2. اضغط **إنشاء مشروع (Add project)** واختر اسم مثل `couple-app`.
 3. داخل المشروع، من القائمة الجانبية:
    - **Build → Authentication** → فعّل **Email/Password** كطريقة تسجيل دخول.
-   - **Build → Firestore Database** → أنشئ قاعدة بيانات (اختر أقرب موقع لكم، مثل `eur3` أو `me-central1`).
-   - **Build → Storage** → فعّل التخزين (لحفظ صور اللحظات).
+   - **Build → Firestore Database** → أنشئ قاعدة بيانات في وضع **Production** (اختر أقرب موقع لكم، مثل `me-central2`).
+
+> ⚠️ **ملاحظة مهمة**: Firebase Storage (لتخزين الصور كملفات) صار يتطلب خطة **Blaze** المدفوعة (تحتاج بطاقة بنكية حتى لو ما راح تُحسب عليكم فلوس فعلياً). عشان يبقى التطبيق **مجاني 100% وبدون أي بطاقة**، صور "لحظاتنا" تُخزَّن كـ base64 مضغوط مباشرة داخل Firestore بدل Storage. الجودة أبسط شوي من صورة كاملة الدقة لكنها تكفي تماماً للفكرة. إذا حبيتوا لاحقاً صور/فيديوهات بجودة أعلى، تقدرون تترقّون لخطة Blaze وتفعّلون Storage (فيه ملف `storage.rules` جاهز لهذا الغرض).
 4. من ⚙️ **Project settings → General**، تحت "Your apps" اضغط أيقونة الويب `</>` وسجّل تطبيق ويب جديد (اسمه مثلاً `coupleapp-web`). راح يعطيك كائن `firebaseConfig` فيه القيم.
 5. انسخ ملف `.env.example` إلى ملف جديد اسمه `.env` وعبّي القيم من `firebaseConfig`:
 
@@ -32,16 +33,16 @@
 cp .env.example .env
 ```
 
-6. (اختياري لكن يُنصح فيه) ثبّت أدوات Firebase وارفع قواعد الحماية الموجودة بالمشروع (`firestore.rules` و `storage.rules`) عشان ما أحد يقدر يوصل لبياناتكم غيركم:
+6. ثبّت أدوات Firebase وارفع قواعد حماية Firestore الموجودة بالمشروع (`firestore.rules`) عشان تحددوا مين يقدر يوصل لبياناتكم:
 
 ```bash
 npm install -g firebase-tools
 firebase login
-firebase init firestore storage   # اختر المشروع اللي أنشأته، ووافق يستخدم الملفات الموجودة
-firebase deploy --only firestore:rules,storage:rules
+firebase init firestore   # اختر المشروع اللي أنشأته، ووافق يستخدم firestore.rules الموجود
+firebase deploy --only firestore:rules
 ```
 
-> بدون هالخطوة، القواعد الافتراضية بفايربيس تكون مقفولة بالكامل والتطبيق ما راح يشتغل. لازم ترفعوا `firestore.rules` و `storage.rules` قبل التجربة.
+> هذي الخطوة **ضرورية**: قاعدة البيانات أُنشئت في وضع Production (كل شي مرفوض افتراضياً)، فلازم ترفعوا `firestore.rules` قبل ما يشتغل تسجيل الدخول والاقتران.
 
 ---
 

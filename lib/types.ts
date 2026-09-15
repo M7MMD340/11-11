@@ -18,8 +18,7 @@ export type Couple = {
 export type Moment = {
   id: string;
   senderId: string;
-  imageUrl: string;
-  storagePath?: string;
+  imageData: string;
   caption: string;
   createdAt: number;
   expiresAt: number;

@@ -87,7 +87,7 @@ export default function MomentsFeed() {
       markMomentViewed(couple.id, m.id, user.uid);
       setTimeout(() => {
         setViewing(null);
-        deleteMoment(couple.id, m.id, m.storagePath);
+        deleteMoment(couple.id, m.id);
       }, 5000);
     }
   }
@@ -164,7 +164,7 @@ export default function MomentsFeed() {
       <Modal visible={!!viewing} animationType="fade" transparent={false}>
         {viewing && (
           <View style={{ flex: 1, backgroundColor: '#000' }}>
-            <Image source={{ uri: viewing.imageUrl }} style={{ flex: 1 }} resizeMode="contain" />
+            <Image source={{ uri: viewing.imageData }} style={{ flex: 1 }} resizeMode="contain" />
             {!!viewing.caption && (
               <View style={styles.viewerCaption}>
                 <Text style={{ color: '#fff', fontSize: 16 }}>{viewing.caption}</Text>
