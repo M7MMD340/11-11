@@ -1,6 +1,35 @@
+import { useEffect } from 'react';
 import { Tabs } from 'expo-router';
+import { ColorValue } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { colors, shadow } from '../../constants/theme';
+
+function AnimatedTabIcon({
+  name,
+  color,
+  size,
+  focused,
+}: {
+  name: keyof typeof Ionicons.glyphMap;
+  color: ColorValue;
+  size: number;
+  focused: boolean;
+}) {
+  const scale = useSharedValue(1);
+
+  useEffect(() => {
+    scale.value = withSpring(focused ? 1.18 : 1, { damping: 10, stiffness: 220 });
+  }, [focused]);
+
+  const animatedStyle = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }));
+
+  return (
+    <Animated.View style={animatedStyle}>
+      <Ionicons name={name} color={color} size={size} />
+    </Animated.View>
+  );
+}
 
 export default function TabsLayout() {
   return (
@@ -24,35 +53,35 @@ export default function TabsLayout() {
         name="index"
         options={{
           title: 'لحظاتنا',
-          tabBarIcon: ({ color, size }) => <Ionicons name="camera" color={color} size={size} />,
+          tabBarIcon: (p) => <AnimatedTabIcon name="camera" {...p} />,
         }}
       />
       <Tabs.Screen
         name="world"
         options={{
           title: 'بيتنا',
-          tabBarIcon: ({ color, size }) => <Ionicons name="home" color={color} size={size} />,
+          tabBarIcon: (p) => <AnimatedTabIcon name="home" {...p} />,
         }}
       />
       <Tabs.Screen
         name="games"
         options={{
           title: 'ألعاب',
-          tabBarIcon: ({ color, size }) => <Ionicons name="game-controller" color={color} size={size} />,
+          tabBarIcon: (p) => <AnimatedTabIcon name="game-controller" {...p} />,
         }}
       />
       <Tabs.Screen
         name="ideas"
         options={{
           title: 'أفكارنا',
-          tabBarIcon: ({ color, size }) => <Ionicons name="bulb" color={color} size={size} />,
+          tabBarIcon: (p) => <AnimatedTabIcon name="bulb" {...p} />,
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
           title: 'حسابي',
-          tabBarIcon: ({ color, size }) => <Ionicons name="person-circle" color={color} size={size} />,
+          tabBarIcon: (p) => <AnimatedTabIcon name="person-circle" {...p} />,
         }}
       />
     </Tabs>

@@ -18,7 +18,8 @@ import { useAuth } from '../../context/AuthContext';
 import { Moment } from '../../lib/types';
 import { sendMoment, markMomentViewed, deleteMoment } from '../../lib/momentsActions';
 import { colors, spacing } from '../../constants/theme';
-import { Screen, GradientHeader } from '../../components/ui';
+import { Screen, GradientHeader, AnimatedCard, usePressScale } from '../../components/ui';
+import Animated from 'react-native-reanimated';
 
 function timeLeftLabel(expiresAt: number) {
   const ms = expiresAt - Date.now();
@@ -27,6 +28,17 @@ function timeLeftLabel(expiresAt: number) {
   if (hours >= 1) return `${hours} س متبقية`;
   const mins = Math.max(1, Math.floor(ms / (1000 * 60)));
   return `${mins} د متبقية`;
+}
+
+function FabButton({ onPress }: { onPress: () => void }) {
+  const { animatedStyle, onPressIn, onPressOut } = usePressScale();
+  return (
+    <Animated.View style={[styles.fabWrap, animatedStyle]}>
+      <Pressable style={styles.fab} onPress={onPress} onPressIn={onPressIn} onPressOut={onPressOut}>
+        <Ionicons name="camera" size={28} color="#fff" />
+      </Pressable>
+    </Animated.View>
+  );
 }
 
 export default function MomentsFeed() {
@@ -146,11 +158,11 @@ export default function MomentsFeed() {
         ListEmptyComponent={
           <Text style={styles.empty}>ما فيه لحظات بعد. صوّر أول لحظة! 💫</Text>
         }
-        renderItem={({ item }) => {
+        renderItem={({ item, index }) => {
           const isMine = item.senderId === user?.uid;
           const viewedByPartner = partnerId ? item.viewedBy.includes(partnerId) : false;
           return (
-            <Pressable onPress={() => openViewer(item)} style={styles.momentRow}>
+            <AnimatedCard index={index} onPress={() => openViewer(item)} style={styles.momentRow}>
               <View style={styles.momentThumb}>
                 <Ionicons name="image" size={22} color={colors.primary} />
               </View>
@@ -160,13 +172,11 @@ export default function MomentsFeed() {
                   {timeLeftLabel(item.expiresAt)} {isMine ? (viewedByPartner ? '· تمت المشاهدة' : '· بانتظار المشاهدة') : ''}
                 </Text>
               </View>
-            </Pressable>
+            </AnimatedCard>
           );
         }}
       />
-      <Pressable style={styles.fab} onPress={openCamera}>
-        <Ionicons name="camera" size={28} color="#fff" />
-      </Pressable>
+      <FabButton onPress={openCamera} />
 
       <Modal visible={!!viewing} animationType="fade" transparent={false}>
         {viewing && (
@@ -210,10 +220,12 @@ const styles = StyleSheet.create({
   },
   momentTitle: { fontWeight: '700', color: colors.text, textAlign: 'right' },
   momentSub: { color: colors.muted, fontSize: 12, textAlign: 'right', marginTop: 2 },
-  fab: {
+  fabWrap: {
     position: 'absolute',
     bottom: spacing(3),
     right: spacing(3),
+  },
+  fab: {
     width: 62,
     height: 62,
     borderRadius: 31,

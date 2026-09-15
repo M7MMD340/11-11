@@ -24,7 +24,7 @@ import {
   houseCapacity,
   expandCost,
 } from '../../constants/worldContent';
-import { Screen, Title, Card, Button, GradientHeader } from '../../components/ui';
+import { Screen, Title, Card, Button, GradientHeader, SegmentedTabs } from '../../components/ui';
 import { colors, spacing } from '../../constants/theme';
 
 type Section = 'garden' | 'house' | 'avatars';
@@ -66,21 +66,16 @@ export default function World() {
         }
       />
 
-      <View style={styles.tabs}>
-        {([
-          ['garden', 'الحديقة 🌿'],
-          ['house', 'المنزل 🛋️'],
-          ['avatars', 'شخصياتنا 👗'],
-        ] as [Section, string][]).map(([key, label]) => (
-          <Pressable
-            key={key}
-            onPress={() => setSection(key)}
-            style={[styles.tabBtn, section === key && styles.tabBtnActive]}
-          >
-            <Text style={[styles.tabLabel, section === key && styles.tabLabelActive]}>{label}</Text>
-          </Pressable>
-        ))}
-      </View>
+      <SegmentedTabs
+        options={[
+          { key: 'garden', label: 'الحديقة 🌿' },
+          { key: 'house', label: 'المنزل 🛋️' },
+          { key: 'avatars', label: 'شخصياتنا 👗' },
+        ]}
+        value={section}
+        onChange={setSection}
+      />
+      <View style={{ height: spacing(2) }} />
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: spacing(6) }}>
         {section === 'garden' && (
@@ -261,19 +256,6 @@ const styles = StyleSheet.create({
     paddingVertical: spacing(0.75),
   },
   coinText: { fontWeight: '700', color: '#fff' },
-  tabs: { flexDirection: 'row', gap: 8, marginVertical: spacing(2) },
-  tabBtn: {
-    flex: 1,
-    paddingVertical: spacing(1.25),
-    borderRadius: 12,
-    alignItems: 'center',
-    backgroundColor: colors.card,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  tabBtnActive: { backgroundColor: colors.primary, borderColor: colors.primary },
-  tabLabel: { color: colors.muted, fontWeight: '600', fontSize: 13 },
-  tabLabelActive: { color: '#fff' },
   emptyText: { textAlign: 'center', color: colors.muted },
   plantGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   plantCell: {

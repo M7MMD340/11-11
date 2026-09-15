@@ -1,8 +1,8 @@
-import { Pressable, Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { Screen, GradientHeader } from '../../../components/ui';
-import { colors, spacing, shadow, radius } from '../../../constants/theme';
+import { Screen, GradientHeader, AnimatedCard } from '../../../components/ui';
+import { colors, spacing, radius } from '../../../constants/theme';
 
 const GAMES = [
   {
@@ -34,11 +34,12 @@ export default function GamesHub() {
     <Screen>
       <GradientHeader title="ألعابنا 🎮" subtitle="اختاروا لعبة تلعبونها مع بعض الحين" />
       <View style={{ gap: spacing(1.5) }}>
-        {GAMES.map((g) => (
-          <Pressable
+        {GAMES.map((g, i) => (
+          <AnimatedCard
             key={g.key}
-            style={styles.card}
+            index={i}
             onPress={() => router.push(`/(tabs)/games/${g.key}` as any)}
+            style={styles.card}
           >
             <View style={[styles.iconWrap, { backgroundColor: g.color + '22' }]}>
               <Ionicons name={g.icon} size={26} color={g.color} />
@@ -48,7 +49,7 @@ export default function GamesHub() {
               <Text style={styles.cardDesc}>{g.desc}</Text>
             </View>
             <Ionicons name="chevron-back" size={20} color={colors.muted} />
-          </Pressable>
+          </AnimatedCard>
         ))}
       </View>
     </Screen>
@@ -59,13 +60,7 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.card,
-    borderRadius: radius.lg,
-    padding: spacing(2),
-    borderWidth: 1,
-    borderColor: colors.border,
     gap: spacing(1.5),
-    ...shadow.soft,
   },
   iconWrap: {
     width: 52,

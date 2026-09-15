@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { View, Text, FlatList, Pressable, StyleSheet } from 'react-native';
+import Animated, { FadeInDown, FadeOutLeft, LinearTransition } from 'react-native-reanimated';
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { Ionicons } from '@expo/vector-icons';
 import { db } from '../../lib/firebase';
@@ -52,8 +53,13 @@ export default function IdeasBoard() {
         data={[...pending, ...done]}
         keyExtractor={(i) => i.id}
         ListEmptyComponent={<Text style={styles.empty}>ما فيه أفكار بعد، ابدأوا بإضافة أول فكرة!</Text>}
-        renderItem={({ item }) => (
-          <View style={[styles.row, item.done && { opacity: 0.5 }]}>
+        renderItem={({ item, index }) => (
+          <Animated.View
+            entering={FadeInDown.delay(index * 50).springify().damping(16)}
+            exiting={FadeOutLeft.duration(200)}
+            layout={LinearTransition.springify().damping(18)}
+            style={[styles.row, item.done && { opacity: 0.5 }]}
+          >
             <Pressable onPress={() => removeIdea(couple!.id, item.id)}>
               <Ionicons name="trash-outline" size={20} color={colors.muted} />
             </Pressable>
@@ -65,7 +71,7 @@ export default function IdeasBoard() {
                 color={item.done ? colors.success : colors.primary}
               />
             </Pressable>
-          </View>
+          </Animated.View>
         )}
       />
     </Screen>
