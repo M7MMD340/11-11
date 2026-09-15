@@ -11,7 +11,16 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Animated, { useAnimatedStyle, useSharedValue, withSpring, FadeInDown } from 'react-native-reanimated';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+  withTiming,
+  withDelay,
+  interpolate,
+  Easing,
+  FadeInDown,
+} from 'react-native-reanimated';
 import { colors, spacing, shadow, radius, gradients, APP_SHORT_NAME, APP_DATE } from '../constants/theme';
 
 export function Screen({ children, style }: { children: React.ReactNode; style?: any }) {
@@ -130,6 +139,52 @@ export function AnimatedCard({
 export function ErrorText({ children }: { children?: string | null }) {
   if (!children) return null;
   return <Text style={styles.error}>{children}</Text>;
+}
+
+const BURST_HEARTS = [
+  { dx: -18, delay: 0, size: 14 },
+  { dx: -6, delay: 60, size: 18 },
+  { dx: 6, delay: 30, size: 16 },
+  { dx: 18, delay: 90, size: 13 },
+];
+
+function BurstHeart({ dx, delay, size }: { dx: number; delay: number; size: number }) {
+  const progress = useSharedValue(0);
+
+  React.useEffect(() => {
+    progress.value = withDelay(delay, withTiming(1, { duration: 750, easing: Easing.out(Easing.cubic) }));
+  }, []);
+
+  const style = useAnimatedStyle(() => ({
+    opacity: interpolate(progress.value, [0, 0.12, 0.75, 1], [0, 1, 1, 0]),
+    transform: [
+      { translateY: interpolate(progress.value, [0, 1], [0, -54]) },
+      { translateX: interpolate(progress.value, [0, 1], [0, dx]) },
+      { scale: interpolate(progress.value, [0, 0.25, 1], [0.3, 1.15, 0.85]) },
+    ],
+  }));
+
+  return (
+    <Animated.Text style={[{ position: 'absolute', fontSize: size }, style]} pointerEvents="none">
+      💗
+    </Animated.Text>
+  );
+}
+
+/**
+ * The app's one signature "delight" moment (per the craft rule: one authored
+ * motion reused everywhere it belongs, not a different effect per screen).
+ * Remount with a changing `burstKey` to replay it — sending a message,
+ * a correct guess, a completed idea, a coin reward, etc.
+ */
+export function HeartBurst() {
+  return (
+    <View style={styles.burstWrap} pointerEvents="none">
+      {BURST_HEARTS.map((h, i) => (
+        <BurstHeart key={i} {...h} />
+      ))}
+    </View>
+  );
 }
 
 export function Logo({ size = 76 }: { size?: number }) {
@@ -349,4 +404,13 @@ const styles = StyleSheet.create({
   },
   segmentedLabel: { color: colors.muted, fontWeight: '600', fontSize: 13 },
   segmentedLabelActive: { color: '#fff' },
+  burstWrap: {
+    position: 'absolute',
+    top: -6,
+    left: '50%',
+    marginLeft: -20,
+    width: 40,
+    height: 10,
+    alignItems: 'center',
+  },
 });

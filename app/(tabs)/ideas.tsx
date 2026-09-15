@@ -7,13 +7,19 @@ import { db } from '../../lib/firebase';
 import { useAuth } from '../../context/AuthContext';
 import { Idea } from '../../lib/types';
 import { addIdea, toggleIdea, removeIdea } from '../../lib/ideasActions';
-import { Screen, GradientHeader, Field, Button } from '../../components/ui';
+import { Screen, GradientHeader, Field, Button, HeartBurst } from '../../components/ui';
 import { colors, spacing, shadow, radius, TAB_BAR_CLEARANCE } from '../../constants/theme';
 
 export default function IdeasBoard() {
   const { user, couple } = useAuth();
   const [ideas, setIdeas] = useState<Idea[]>([]);
   const [text, setText] = useState('');
+  const [burst, setBurst] = useState<{ id: string; nonce: number } | null>(null);
+
+  function onToggle(id: string, next: boolean) {
+    toggleIdea(couple!.id, id, next);
+    if (next) setBurst((b) => ({ id, nonce: (b?.nonce ?? 0) + 1 }));
+  }
 
   useEffect(() => {
     if (!couple) return;
@@ -69,19 +75,22 @@ export default function IdeasBoard() {
               <Ionicons name="trash-outline" size={20} color={colors.muted} />
             </Pressable>
             <Text style={[styles.rowText, item.done && styles.rowTextDone]}>{item.text}</Text>
-            <Pressable
-              onPress={() => toggleIdea(couple!.id, item.id, !item.done)}
-              accessibilityRole="checkbox"
-              accessibilityState={{ checked: item.done }}
-              accessibilityLabel={item.done ? `إلغاء إنجاز: ${item.text}` : `وضع علامة أنجزناها: ${item.text}`}
-              hitSlop={10}
-            >
-              <Ionicons
-                name={item.done ? 'checkmark-circle' : 'ellipse-outline'}
-                size={24}
-                color={item.done ? colors.success : colors.primary}
-              />
-            </Pressable>
+            <View>
+              {burst?.id === item.id && <HeartBurst key={burst.nonce} />}
+              <Pressable
+                onPress={() => onToggle(item.id, !item.done)}
+                accessibilityRole="checkbox"
+                accessibilityState={{ checked: item.done }}
+                accessibilityLabel={item.done ? `إلغاء إنجاز: ${item.text}` : `وضع علامة أنجزناها: ${item.text}`}
+                hitSlop={10}
+              >
+                <Ionicons
+                  name={item.done ? 'checkmark-circle' : 'ellipse-outline'}
+                  size={24}
+                  color={item.done ? colors.success : colors.primary}
+                />
+              </Pressable>
+            </View>
           </Animated.View>
         )}
       />

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, TextInput, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../../constants/theme';
+import { HeartBurst } from '../ui';
 import { chatStyles as s } from './styles';
 
 export function InputBar({
@@ -12,12 +13,14 @@ export function InputBar({
   onOpenCamera: () => void;
 }) {
   const [text, setText] = useState('');
+  const [burstKey, setBurstKey] = useState(0);
 
   function submit() {
     const value = text.trim();
     if (!value) return;
     onSendText(value);
     setText('');
+    setBurstKey((k) => k + 1);
   }
 
   return (
@@ -39,16 +42,19 @@ export function InputBar({
         multiline
         accessibilityLabel="رسالة نصية"
       />
-      <Pressable
-        onPress={submit}
-        disabled={!text.trim()}
-        style={[s.roundBtn, s.roundBtnPrimary, !text.trim() && { opacity: 0.4 }]}
-        accessibilityRole="button"
-        accessibilityLabel="إرسال"
-        accessibilityState={{ disabled: !text.trim() }}
-      >
-        <Ionicons name="send" size={20} color="#fff" />
-      </Pressable>
+      <View>
+        {burstKey > 0 && <HeartBurst key={burstKey} />}
+        <Pressable
+          onPress={submit}
+          disabled={!text.trim()}
+          style={[s.roundBtn, s.roundBtnPrimary, !text.trim() && { opacity: 0.4 }]}
+          accessibilityRole="button"
+          accessibilityLabel="إرسال"
+          accessibilityState={{ disabled: !text.trim() }}
+        >
+          <Ionicons name="send" size={20} color="#fff" />
+        </Pressable>
+      </View>
     </View>
   );
 }

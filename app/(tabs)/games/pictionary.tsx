@@ -11,7 +11,7 @@ import {
   submitPictionaryGuess,
 } from '../../../lib/gamesActions';
 import { awardCoins } from '../../../lib/worldActions';
-import { Screen, Card, Button, Field, Subtitle } from '../../../components/ui';
+import { Screen, Card, Button, Field, Subtitle, HeartBurst } from '../../../components/ui';
 import { colors, spacing } from '../../../constants/theme';
 
 type Stroke = { color: string; points: number[] };
@@ -142,6 +142,7 @@ export default function Pictionary() {
 
           {state.status === 'guessed' && (
             <Card style={{ marginTop: spacing(2), alignItems: 'center' }}>
+              <HeartBurst key={state.round} />
               <Text style={styles.correct}>صح! الكلمة كانت: {state.word} 🎉</Text>
               <Button title={isDrawer ? 'تبادل الأدوار' : 'أنا أرسم الحين'} onPress={onPassBrush} />
             </Card>
