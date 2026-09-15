@@ -15,6 +15,7 @@ import { ChatHeader } from '../../components/chat/ChatHeader';
 import { InputBar } from '../../components/chat/InputBar';
 import { MessageBubble } from '../../components/chat/MessageBubble';
 import { PhotoBubble } from '../../components/chat/PhotoBubble';
+import { DateSeparator } from '../../components/chat/DateSeparator';
 import { Text } from 'react-native';
 import { chatStyles as styles } from '../../components/chat/styles';
 import { spacing, TAB_BAR_CLEARANCE } from '../../constants/theme';
@@ -126,19 +127,26 @@ export default function ChatScreen() {
           inverted
           contentContainerStyle={styles.messageList}
           ListEmptyComponent={<Text style={styles.empty}>ابدأوا أول رسالة أو لقطة مع بعض! 💬</Text>}
-          renderItem={({ item }) => {
+          renderItem={({ item, index }) => {
             const mine = item.senderId === user?.uid;
-            if (item.type === 'photo') {
-              return (
-                <PhotoBubble
-                  message={item}
-                  mine={mine}
-                  opened={!!user && item.viewedBy.includes(user.uid)}
-                  onOpen={() => openPhoto(item)}
-                />
-              );
-            }
-            return <MessageBubble message={item} mine={mine} />;
+            const older = messages[index + 1];
+            const isNewDay =
+              !older || new Date(older.createdAt).toDateString() !== new Date(item.createdAt).toDateString();
+            return (
+              <>
+                {isNewDay && <DateSeparator timestamp={item.createdAt} />}
+                {item.type === 'photo' ? (
+                  <PhotoBubble
+                    message={item}
+                    mine={mine}
+                    opened={!!user && item.viewedBy.includes(user.uid)}
+                    onOpen={() => openPhoto(item)}
+                  />
+                ) : (
+                  <MessageBubble message={item} mine={mine} />
+                )}
+              </>
+            );
           }}
         />
         <View style={{ paddingBottom: TAB_BAR_CLEARANCE - spacing(2) }}>

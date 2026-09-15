@@ -152,4 +152,15 @@ export const chatStyles = StyleSheet.create({
   roundBtnGhost: { backgroundColor: colors.bg, borderWidth: 1, borderColor: colors.border },
 
   empty: { textAlign: 'center', color: colors.muted, marginTop: spacing(6) },
+
+  dateSeparator: { alignItems: 'center', marginVertical: spacing(2) },
+  dateSeparatorPill: {
+    backgroundColor: colors.card,
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: radius.pill,
+    paddingHorizontal: spacing(1.5),
+    paddingVertical: spacing(0.5),
+  },
+  dateSeparatorText: { color: colors.muted, fontSize: 11, fontWeight: '600' },
 });
