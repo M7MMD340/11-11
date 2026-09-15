@@ -49,3 +49,6 @@ export const radius = {
 };
 
 export const spacing = (n: number) => n * 8;
+
+// Clearance so scrollable content isn't hidden behind the floating tab bar.
+export const TAB_BAR_CLEARANCE = 110;

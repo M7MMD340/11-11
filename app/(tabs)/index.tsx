@@ -16,7 +16,7 @@ import { MessageBubble } from '../../components/chat/MessageBubble';
 import { PhotoBubble } from '../../components/chat/PhotoBubble';
 import { Text } from 'react-native';
 import { chatStyles as styles } from '../../components/chat/styles';
-import { spacing } from '../../constants/theme';
+import { spacing, TAB_BAR_CLEARANCE } from '../../constants/theme';
 
 export default function ChatScreen() {
   const { user, couple, partnerId, partnerProfile } = useAuth();
@@ -129,7 +129,9 @@ export default function ChatScreen() {
             return <MessageBubble message={item} mine={mine} />;
           }}
         />
-        <InputBar onSendText={onSendText} onOpenCamera={openCamera} />
+        <View style={{ paddingBottom: TAB_BAR_CLEARANCE - spacing(2) }}>
+          <InputBar onSendText={onSendText} onOpenCamera={openCamera} />
+        </View>
       </KeyboardAvoidingView>
       <PhotoViewer message={viewing} onClose={() => setViewing(null)} />
     </Screen>

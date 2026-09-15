@@ -6,7 +6,7 @@ import { useAuth } from '../../context/AuthContext';
 import { WorldState } from '../../lib/types';
 import { ensureWorldExists } from '../../lib/worldActions';
 import { Screen, Title, GradientHeader, SegmentedTabs } from '../../components/ui';
-import { spacing } from '../../constants/theme';
+import { spacing, TAB_BAR_CLEARANCE } from '../../constants/theme';
 import { worldStyles } from '../../components/world/styles';
 import { GardenSection } from '../../components/world/GardenSection';
 import { HouseSection } from '../../components/world/HouseSection';
@@ -59,7 +59,7 @@ export default function World() {
       />
       <View style={{ height: spacing(2) }} />
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: spacing(6) }}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: TAB_BAR_CLEARANCE }}>
         {section === 'garden' && (
           <GardenSection coupleId={couple.id} plants={world.plants} coins={world.coins} />
         )}

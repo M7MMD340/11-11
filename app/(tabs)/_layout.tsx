@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 import { Tabs } from 'expo-router';
-import { ColorValue } from 'react-native';
+import { ColorValue, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-import { colors, shadow } from '../../constants/theme';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
+import { colors, shadow, radius } from '../../constants/theme';
 
 function AnimatedTabIcon({
   name,
@@ -17,36 +18,60 @@ function AnimatedTabIcon({
   focused: boolean;
 }) {
   const scale = useSharedValue(1);
+  const pillOpacity = useSharedValue(0);
 
   useEffect(() => {
-    scale.value = withSpring(focused ? 1.18 : 1, { damping: 10, stiffness: 220 });
+    scale.value = withSpring(focused ? 1.08 : 1, { damping: 10, stiffness: 220 });
+    pillOpacity.value = withTiming(focused ? 1 : 0, { duration: 180 });
   }, [focused]);
 
-  const animatedStyle = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }));
+  const iconStyle = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }));
+  const pillStyle = useAnimatedStyle(() => ({ opacity: pillOpacity.value }));
 
   return (
-    <Animated.View style={animatedStyle}>
-      <Ionicons name={name} color={color} size={size} />
-    </Animated.View>
+    <View style={{ width: 44, height: 34, alignItems: 'center', justifyContent: 'center' }}>
+      <Animated.View
+        style={[
+          {
+            position: 'absolute',
+            width: 40,
+            height: 34,
+            borderRadius: radius.pill,
+            backgroundColor: colors.primary,
+          },
+          pillStyle,
+        ]}
+      />
+      <Animated.View style={iconStyle}>
+        <Ionicons name={name} color={focused ? '#fff' : color} size={size} />
+      </Animated.View>
+    </View>
   );
 }
 
 export default function TabsLayout() {
+  const insets = useSafeAreaInsets();
+
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
+        tabBarShowLabel: false,
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.muted,
-        tabBarLabelStyle: { fontWeight: '600', fontSize: 11 },
         tabBarStyle: {
-          borderTopColor: colors.border,
+          position: 'absolute',
+          left: 20,
+          right: 20,
+          bottom: insets.bottom + 12,
+          height: 62,
+          borderRadius: radius.pill,
+          borderTopWidth: 0,
           backgroundColor: colors.card,
-          height: 64,
-          paddingTop: 6,
-          paddingBottom: 10,
+          paddingHorizontal: 6,
           ...shadow.lift,
         },
+        tabBarItemStyle: { paddingTop: 0 },
       }}
     >
       <Tabs.Screen

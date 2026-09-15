@@ -8,7 +8,7 @@ import { useAuth } from '../../context/AuthContext';
 import { Idea } from '../../lib/types';
 import { addIdea, toggleIdea, removeIdea } from '../../lib/ideasActions';
 import { Screen, GradientHeader, Field, Button } from '../../components/ui';
-import { colors, spacing, shadow, radius } from '../../constants/theme';
+import { colors, spacing, shadow, radius, TAB_BAR_CLEARANCE } from '../../constants/theme';
 
 export default function IdeasBoard() {
   const { user, couple } = useAuth();
@@ -50,6 +50,7 @@ export default function IdeasBoard() {
 
       <FlatList
         style={{ marginTop: spacing(2) }}
+        contentContainerStyle={{ paddingBottom: TAB_BAR_CLEARANCE }}
         data={[...pending, ...done]}
         keyExtractor={(i) => i.id}
         ListEmptyComponent={<Text style={styles.empty}>ما فيه أفكار بعد، ابدأوا بإضافة أول فكرة!</Text>}
