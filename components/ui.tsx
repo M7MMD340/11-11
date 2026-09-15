@@ -9,6 +9,7 @@ import {
   View,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Ionicons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, {
@@ -37,6 +38,32 @@ export function Subtitle({ children }: { children: React.ReactNode }) {
 
 export function Field(props: TextInputProps) {
   return <TextInput placeholderTextColor={colors.muted} style={styles.field} {...props} />;
+}
+
+/** A text field with a leading icon, its border lighting up on focus. */
+export function IconField({
+  icon,
+  ...props
+}: TextInputProps & { icon: keyof typeof Ionicons.glyphMap }) {
+  const [focused, setFocused] = React.useState(false);
+  return (
+    <View style={[styles.iconField, focused && styles.iconFieldFocused]}>
+      <Ionicons name={icon} size={18} color={focused ? colors.primary : colors.muted} />
+      <TextInput
+        placeholderTextColor={colors.muted}
+        style={styles.iconFieldInput}
+        onFocus={(e) => {
+          setFocused(true);
+          props.onFocus?.(e);
+        }}
+        onBlur={(e) => {
+          setFocused(false);
+          props.onBlur?.(e);
+        }}
+        {...props}
+      />
+    </View>
+  );
 }
 
 export function usePressScale(disabled?: boolean) {
@@ -290,7 +317,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing(3),
   },
   field: {
-    backgroundColor: colors.card,
+    backgroundColor: colors.cardAlt,
     borderWidth: 1,
     borderColor: colors.border,
     borderRadius: radius.md,
@@ -299,6 +326,27 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.text,
     marginBottom: spacing(1.5),
+  },
+  iconField: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing(1),
+    backgroundColor: colors.cardAlt,
+    borderWidth: 1.5,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    paddingHorizontal: spacing(2),
+    marginBottom: spacing(1.5),
+  },
+  iconFieldFocused: {
+    borderColor: colors.primary,
+  },
+  iconFieldInput: {
+    flex: 1,
+    paddingVertical: spacing(1.5),
+    fontSize: 16,
+    color: colors.text,
+    textAlign: 'right',
   },
   button: {
     borderRadius: radius.md,

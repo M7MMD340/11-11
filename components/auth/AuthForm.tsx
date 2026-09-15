@@ -11,7 +11,8 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Field, Button, ErrorText, Logo, SegmentedTabs } from '../ui';
+import Animated, { FadeInDown, FadeIn } from 'react-native-reanimated';
+import { IconField, Button, ErrorText, Logo, SegmentedTabs } from '../ui';
 import { signUp, logIn } from '../../lib/authActions';
 import { APP_NAME, colors, gradients, radius, shadow, spacing } from '../../constants/theme';
 
@@ -77,14 +78,16 @@ export function AuthForm({ mode }: { mode: Mode }) {
         end={{ x: 1, y: 1 }}
         style={[styles.hero, { paddingTop: insets.top + spacing(4) }]}
       >
-        <Logo size={68} />
-        <Text style={styles.heroTitle}>{APP_NAME}</Text>
-        <Text style={styles.heroTagline}>مساحتكم الخاصة، بس بينكم اثنين</Text>
+        <Animated.View entering={FadeIn.duration(500)} style={{ alignItems: 'center' }}>
+          <Logo size={68} />
+          <Text style={styles.heroTitle}>{APP_NAME}</Text>
+          <Text style={styles.heroTagline}>مساحتكم الخاصة، بس بينكم اثنين</Text>
+        </Animated.View>
       </LinearGradient>
 
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
-          <View style={styles.card}>
+          <Animated.View entering={FadeInDown.duration(450).springify().damping(18)} style={styles.card}>
             <SegmentedTabs
               options={[
                 { key: 'login', label: 'دخول' },
@@ -98,9 +101,10 @@ export function AuthForm({ mode }: { mode: Mode }) {
             <ErrorText>{error}</ErrorText>
 
             {mode === 'signup' && (
-              <Field placeholder="الاسم" value={name} onChangeText={setName} accessibilityLabel="الاسم" />
+              <IconField icon="person-outline" placeholder="الاسم" value={name} onChangeText={setName} accessibilityLabel="الاسم" />
             )}
-            <Field
+            <IconField
+              icon="mail-outline"
               placeholder="البريد الإلكتروني"
               autoCapitalize="none"
               keyboardType="email-address"
@@ -108,7 +112,8 @@ export function AuthForm({ mode }: { mode: Mode }) {
               onChangeText={setEmail}
               accessibilityLabel="البريد الإلكتروني"
             />
-            <Field
+            <IconField
+              icon="lock-closed-outline"
               placeholder="كلمة المرور"
               secureTextEntry
               value={password}
@@ -117,7 +122,7 @@ export function AuthForm({ mode }: { mode: Mode }) {
             />
 
             <Button title={mode === 'login' ? 'دخول' : 'إنشاء حساب'} onPress={onSubmit} loading={loading} />
-          </View>
+          </Animated.View>
         </ScrollView>
       </KeyboardAvoidingView>
     </View>

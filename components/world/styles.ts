@@ -15,7 +15,7 @@ export const worldStyles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: radius.md,
-    backgroundColor: '#F3FBF6',
+    backgroundColor: colors.cardAlt,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
