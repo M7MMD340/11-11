@@ -18,7 +18,7 @@ import { useAuth } from '../../context/AuthContext';
 import { Moment } from '../../lib/types';
 import { sendMoment, markMomentViewed, deleteMoment } from '../../lib/momentsActions';
 import { colors, spacing } from '../../constants/theme';
-import { Screen, Title } from '../../components/ui';
+import { Screen, GradientHeader } from '../../components/ui';
 
 function timeLeftLabel(expiresAt: number) {
   const ms = expiresAt - Date.now();
@@ -33,6 +33,7 @@ export default function MomentsFeed() {
   const { user, couple, partnerId } = useAuth();
   const [moments, setMoments] = useState<Moment[]>([]);
   const [showCamera, setShowCamera] = useState(false);
+  const [facing, setFacing] = useState<'back' | 'front'>('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [captured, setCaptured] = useState<string | null>(null);
   const [caption, setCaption] = useState('');
@@ -95,12 +96,18 @@ export default function MomentsFeed() {
   if (showCamera) {
     return (
       <View style={{ flex: 1 }}>
-        <CameraView ref={cameraRef} style={{ flex: 1 }} facing="back" />
+        <CameraView ref={cameraRef} style={{ flex: 1 }} facing={facing} />
         <View style={styles.cameraBar}>
           <Pressable onPress={() => setShowCamera(false)} style={styles.cameraCancel}>
             <Ionicons name="close" size={28} color="#fff" />
           </Pressable>
           <Pressable onPress={takePhoto} style={styles.shutter} />
+          <Pressable
+            onPress={() => setFacing((f) => (f === 'back' ? 'front' : 'back'))}
+            style={styles.cameraFlip}
+          >
+            <Ionicons name="camera-reverse" size={28} color="#fff" />
+          </Pressable>
         </View>
       </View>
     );
@@ -131,7 +138,7 @@ export default function MomentsFeed() {
 
   return (
     <Screen>
-      <Title>لحظاتنا 📸</Title>
+      <GradientHeader title="لحظاتنا 📸" subtitle="شاركوا لحظاتكم قبل ما تختفي" />
       <FlatList
         data={moments}
         keyExtractor={(m) => m.id}
@@ -228,6 +235,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
   },
   cameraCancel: { padding: 10 },
+  cameraFlip: { padding: 10 },
   shutter: {
     width: 74,
     height: 74,

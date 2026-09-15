@@ -11,7 +11,6 @@ export type Couple = {
   id: string;
   inviteCode: string;
   members: string[];
-  coins: number;
   createdAt: number;
 };
 

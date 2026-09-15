@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'expo-router';
-import { KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
-import { Screen, Title, Subtitle, Field, Button, ErrorText } from '../../components/ui';
+import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
+import { Screen, Title, Subtitle, Field, Button, ErrorText, Logo } from '../../components/ui';
 import { logIn } from '../../lib/authActions';
+import { APP_NAME, spacing } from '../../constants/theme';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -30,7 +31,10 @@ export default function Login() {
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
         <Screen style={{ justifyContent: 'center' }}>
-          <Title>مساحتنا 💞</Title>
+          <View style={{ alignItems: 'center', marginBottom: spacing(3) }}>
+            <Logo />
+          </View>
+          <Title>{APP_NAME}</Title>
           <Subtitle>سجّلوا الدخول لعالمكم الخاص</Subtitle>
 
           <ErrorText>{error}</ErrorText>

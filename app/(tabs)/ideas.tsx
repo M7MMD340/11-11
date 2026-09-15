@@ -6,8 +6,8 @@ import { db } from '../../lib/firebase';
 import { useAuth } from '../../context/AuthContext';
 import { Idea } from '../../lib/types';
 import { addIdea, toggleIdea, removeIdea } from '../../lib/ideasActions';
-import { Screen, Title, Subtitle, Field, Button } from '../../components/ui';
-import { colors, spacing } from '../../constants/theme';
+import { Screen, GradientHeader, Field, Button } from '../../components/ui';
+import { colors, spacing, shadow, radius } from '../../constants/theme';
 
 export default function IdeasBoard() {
   const { user, couple } = useAuth();
@@ -35,8 +35,7 @@ export default function IdeasBoard() {
 
   return (
     <Screen>
-      <Title>أفكارنا 💡</Title>
-      <Subtitle>مواعيد، أمنيات، وأفكار نسويها مع بعض</Subtitle>
+      <GradientHeader title="أفكارنا 💡" subtitle="مواعيد، أمنيات، وأفكار نسويها مع بعض" />
       <View style={{ flexDirection: 'row', gap: 8 }}>
         <Field
           placeholder="فكرة جديدة..."
@@ -80,12 +79,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: colors.card,
-    borderRadius: 14,
+    borderRadius: radius.md,
     padding: spacing(1.5),
     marginBottom: spacing(1),
     borderWidth: 1,
     borderColor: colors.border,
     gap: 10,
+    ...shadow.soft,
   },
   rowText: { flex: 1, color: colors.text, textAlign: 'right' },
   rowTextDone: { textDecorationLine: 'line-through' },

@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet } from 'react-native';
-import { Screen, Title, Card, Button } from '../../components/ui';
+import { Screen, GradientHeader, Card, Button, Logo } from '../../components/ui';
 import { useAuth } from '../../context/AuthContext';
 import { logOut } from '../../lib/authActions';
 import { colors, spacing } from '../../constants/theme';
@@ -9,7 +9,10 @@ export default function Profile() {
 
   return (
     <Screen>
-      <Title>حسابي 👤</Title>
+      <GradientHeader title="حسابي 👤" subtitle="بياناتكم ورمز الدعوة" />
+      <View style={{ alignItems: 'center', marginBottom: spacing(2) }}>
+        <Logo size={64} />
+      </View>
       <Card style={{ marginBottom: spacing(2) }}>
         <Text style={styles.label}>الاسم</Text>
         <Text style={styles.value}>{profile?.displayName}</Text>
@@ -21,8 +24,6 @@ export default function Profile() {
         <Text style={[styles.value, { fontSize: 22, letterSpacing: 3, color: colors.primary }]}>
           {couple?.inviteCode}
         </Text>
-        <Text style={styles.label}>عدد النقاط المشتركة</Text>
-        <Text style={styles.value}>{couple?.coins ?? 0} 🪙</Text>
       </Card>
       <Button title="تسجيل خروج" onPress={logOut} variant="ghost" />
     </Screen>

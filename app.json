@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "CoupleApp",
-    "slug": "CoupleApp",
-    "scheme": "coupleapp",
+    "name": "M-A 11/11",
+    "slug": "m-a-11-11",
+    "scheme": "m-a-11-11",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -17,7 +17,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#A6334E",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"

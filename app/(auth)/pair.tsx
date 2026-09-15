@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Share, View, Text, StyleSheet } from 'react-native';
-import { Screen, Title, Subtitle, Field, Button, ErrorText, Card } from '../../components/ui';
+import { Screen, Title, Subtitle, Field, Button, ErrorText, Card, Logo } from '../../components/ui';
 import { createCouple, joinCouple } from '../../lib/coupleActions';
 import { logOut } from '../../lib/authActions';
 import { useAuth } from '../../context/AuthContext';
-import { colors, spacing } from '../../constants/theme';
+import { colors, spacing, APP_NAME } from '../../constants/theme';
 
 export default function Pair() {
   const { user } = useAuth();
@@ -48,6 +48,9 @@ export default function Pair() {
 
   return (
     <Screen style={{ justifyContent: 'center' }}>
+      <View style={{ alignItems: 'center', marginBottom: spacing(3) }}>
+        <Logo size={64} />
+      </View>
       <Title>خلّيكم مع بعض 👫</Title>
       <Subtitle>اربطوا حسابكم بحساب شريككم عشان تشتركوا في كل شي</Subtitle>
       <ErrorText>{error}</ErrorText>
@@ -70,7 +73,7 @@ export default function Pair() {
               <Text style={styles.code}>{myCode}</Text>
               <Button
                 title="مشاركة الرمز"
-                onPress={() => Share.share({ message: `انضم لي على مساحتنا! رمز الدعوة: ${myCode}` })}
+                onPress={() => Share.share({ message: `انضم لي على ${APP_NAME}! رمز الدعوة: ${myCode}` })}
                 variant="secondary"
               />
               <Text style={styles.waiting}>بانتظار انضمام شريككم…</Text>

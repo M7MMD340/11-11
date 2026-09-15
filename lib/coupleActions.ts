@@ -24,7 +24,6 @@ export async function createCouple(uid: string) {
   const coupleRef = await addDoc(collection(db, 'couples'), {
     inviteCode,
     members: [uid],
-    coins: 20,
     createdAt: Date.now(),
   });
   await setDoc(

@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Link, useRouter } from 'expo-router';
-import { KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
-import { Screen, Title, Subtitle, Field, Button, ErrorText } from '../../components/ui';
+import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
+import { Screen, Title, Subtitle, Field, Button, ErrorText, Logo } from '../../components/ui';
 import { signUp } from '../../lib/authActions';
+import { spacing } from '../../constants/theme';
 
 export default function Signup() {
   const router = useRouter();
@@ -41,6 +42,9 @@ export default function Signup() {
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
         <Screen style={{ justifyContent: 'center' }}>
+          <View style={{ alignItems: 'center', marginBottom: spacing(3) }}>
+            <Logo size={64} />
+          </View>
           <Title>أهلاً فيكم 🌸</Title>
           <Subtitle>أنشئوا حسابكم للبدء</Subtitle>
 

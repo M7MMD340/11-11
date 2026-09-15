@@ -1,8 +1,8 @@
 import { Pressable, Text, View, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { Screen, Title, Subtitle } from '../../../components/ui';
-import { colors, spacing } from '../../../constants/theme';
+import { Screen, GradientHeader } from '../../../components/ui';
+import { colors, spacing, shadow, radius } from '../../../constants/theme';
 
 const GAMES = [
   {
@@ -10,21 +10,21 @@ const GAMES = [
     title: 'صراحة ولا تحدي',
     desc: 'أسئلة وتحديات حلوة بينكم',
     icon: 'chatbubbles' as const,
-    color: '#E8607A',
+    color: colors.primary,
   },
   {
     key: 'pictionary',
     title: 'ارسم وخمّن',
     desc: 'واحد يرسم والثاني يخمّن',
     icon: 'brush' as const,
-    color: '#7C6BC4',
+    color: colors.secondaryLight,
   },
   {
     key: 'quiz',
     title: 'كم تعرفني',
     desc: 'شوفوا كم تعرفون بعض',
     icon: 'help-circle' as const,
-    color: '#F6B33C',
+    color: colors.accent,
   },
 ];
 
@@ -32,8 +32,7 @@ export default function GamesHub() {
   const router = useRouter();
   return (
     <Screen>
-      <Title>ألعابنا 🎮</Title>
-      <Subtitle>اختاروا لعبة تلعبونها مع بعض الحين</Subtitle>
+      <GradientHeader title="ألعابنا 🎮" subtitle="اختاروا لعبة تلعبونها مع بعض الحين" />
       <View style={{ gap: spacing(1.5) }}>
         {GAMES.map((g) => (
           <Pressable
@@ -61,11 +60,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: colors.card,
-    borderRadius: 18,
+    borderRadius: radius.lg,
     padding: spacing(2),
     borderWidth: 1,
     borderColor: colors.border,
     gap: spacing(1.5),
+    ...shadow.soft,
   },
   iconWrap: {
     width: 52,

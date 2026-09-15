@@ -24,7 +24,7 @@ import {
   houseCapacity,
   expandCost,
 } from '../../constants/worldContent';
-import { Screen, Title, Card, Button } from '../../components/ui';
+import { Screen, Title, Card, Button, GradientHeader } from '../../components/ui';
 import { colors, spacing } from '../../constants/theme';
 
 type Section = 'garden' | 'house' | 'avatars';
@@ -56,12 +56,15 @@ export default function World() {
 
   return (
     <Screen>
-      <View style={styles.header}>
-        <Title>بيتنا 🏡</Title>
-        <View style={styles.coinBadge}>
-          <Text style={styles.coinText}>{world.coins} 🪙</Text>
-        </View>
-      </View>
+      <GradientHeader
+        title="بيتنا 🏡"
+        subtitle="ابنوا بيتكم وحديقتكم مع بعض"
+        right={
+          <View style={styles.coinBadge}>
+            <Text style={styles.coinText}>{world.coins} 🪙</Text>
+          </View>
+        }
+      />
 
       <View style={styles.tabs}>
         {([
@@ -251,14 +254,13 @@ function AvatarEditor({
 }
 
 const styles = StyleSheet.create({
-  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   coinBadge: {
-    backgroundColor: '#FFF3D6',
+    backgroundColor: 'rgba(255,255,255,0.22)',
     borderRadius: 20,
     paddingHorizontal: spacing(1.5),
     paddingVertical: spacing(0.75),
   },
-  coinText: { fontWeight: '700', color: colors.text },
+  coinText: { fontWeight: '700', color: '#fff' },
   tabs: { flexDirection: 'row', gap: 8, marginVertical: spacing(2) },
   tabBtn: {
     flex: 1,
